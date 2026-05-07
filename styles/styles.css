@@ -10,78 +10,39 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
-
-  /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
-
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
-
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
-
-  /* nav height */
-  --nav-height: 64px;
-}
+@import url('variables.css');
 
 /* fallback fonts */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
+  font-family: "Alaska-Bold"; /* stylelint-disable-line font-family-name-quotes */
+  size-adjust: 105%;
   src: local('Arial');
 }
 
 @font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
+  font-family: Manrope-fallback;
+  size-adjust: 96%;
   src: local('Arial');
-}
-
-@media (width >= 900px) {
-  :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
-
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
-  }
 }
 
 body {
   display: none;
   margin: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: var(--body-font-family);
+  background-color: var(--color-surface-0);
+  color: var(--color-on-surface);
+  font-family: var(--font-family-base);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 body.appear {
   display: block;
+}
+
+/* selection */
+::selection {
+  background: rgb(0 251 251 / 25%);
+  color: var(--color-on-surface);
 }
 
 header {
@@ -98,6 +59,9 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
 h1,
 h2,
 h3,
@@ -106,13 +70,20 @@ h5,
 h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
-  font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
   scroll-margin: 40px;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  letter-spacing: var(--display-letter-spacing);
+  line-height: var(--display-line-height);
+}
+
 h2 { font-size: var(--heading-font-size-xl); }
 h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
@@ -135,9 +106,10 @@ pre {
 }
 
 pre {
-  padding: 16px;
-  border-radius: 8px;
-  background-color: var(--light-color);
+  padding: var(--space-16);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-2);
+  color: var(--color-on-surface);
   overflow-x: auto;
   white-space: pre;
 }
@@ -153,23 +125,33 @@ button {
   font: inherit;
 }
 
-/* links */
+/* ========================================
+   LINKS
+   ======================================== */
 a:any-link {
-  color: var(--link-color);
+  color: var(--color-link);
   text-decoration: none;
   overflow-wrap: break-word;
+  transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--link-hover-color);
+  color: var(--color-link-hover);
   text-decoration: underline;
 }
 
-/* buttons */
+/* ========================================
+   BUTTONS — Hard-slab 3D system
+   A hard (zero-blur) box-shadow offset creates the
+   visible depth block. On hover/focus the face
+   translates onto the shadow → it collapses → sunken.
+   ======================================== */
 p.button-wrapper {
+  text-align: center;
   margin: 12px 0;
 }
 
+/* ── Base shell ────────────────────────────────── */
 a.button:any-link,
 button.button {
   box-sizing: border-box;
@@ -178,106 +160,179 @@ button.button {
   justify-content: center;
   max-width: 100%;
   margin: 0;
+  padding: var(--btn-padding);
   border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font: inherit;
-  font-weight: 500;
+  border-radius: var(--btn-radius);
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: var(--btn-font-size);
   line-height: 1.25;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  position: relative;
+  transform: translate(0, 0);
+  transition: all;
+  will-change: transform, box-shadow;
+  min-height: 36px;
 }
 
-a.button[aria-disabled="true"],
-button.button:disabled {
+/* Default button style when no explicit variant is authored */
+a.button:not(.primary, .secondary, .accent),
+button.button:not(.primary, .secondary, .accent) {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-color);
+  border-color: var(--btn-primary-border);
+  box-shadow:
+    var(--btn-depth) var(--btn-depth) 0 0 var(--btn-primary-border),
+    0 0 24px var(--btn-primary-glow);
+}
+
+a.button:not(.primary, .secondary, .accent):hover,
+a.button:not(.primary, .secondary, .accent):focus-visible,
+button.button:not(.primary, .secondary, .accent):hover,
+button.button:not(.primary, .secondary, .accent):focus-visible {
+  background: var(--btn-primary-bg-hover);
+  transform: translate(var(--btn-depth), var(--btn-depth));
+  box-shadow:
+    0 0 0 0 var(--btn-primary-border),
+    0 0 24px var(--btn-primary-glow);
+  outline: none;
+}
+
+a.button:not(.primary, .secondary, .accent):active,
+button.button:not(.primary, .secondary, .accent):active {
+  background: var(--btn-primary-bg-active);
+  transform: translate(var(--btn-depth), var(--btn-depth));
+  box-shadow:
+    0 0 0 0 var(--btn-primary-border),
+    0 0 10px var(--btn-primary-glow);
+}
+
+a.button:not(.primary, .secondary, .accent)[aria-disabled="true"],
+button.button:not(.primary, .secondary, .accent):disabled {
   cursor: not-allowed;
   pointer-events: none;
+  background: var(--color-surface-3);
+  color: var(--color-on-surface-dim);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
+/* ── Primary — Pink hard slab ──────────────────── */
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  background: var(--btn-primary-gradient);
+  color: var(--btn-primary-color);
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background: linear-gradient(90deg, rgb(46 147 117) 0%, rgb(43 149 139) 50%, rgb(33 144 151) 100%);
+}
+
+a.button.primary:active,
+button.button.primary:active {
+  background: var(--btn-primary-bg-active);
+  transform: translate(var(--btn-depth), var(--btn-depth));
+  box-shadow:
+    0 0 0 0 var(--btn-primary-border),
+    0 0 10px var(--btn-primary-glow);
 }
 
 a.button.primary[aria-disabled="true"],
-a.button.primary[aria-disabled="true"]:hover,
-a.button.primary[aria-disabled="true"]:focus-visible,
-button.button.primary:disabled,
-button.button.primary:disabled:hover,
-button.button.primary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
+button.button.primary:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background: var(--color-surface-3);
+  color: var(--color-on-surface-dim);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
+/* ── Secondary — Teal hard slab ────────────────── */
 a.button.secondary,
 button.button.secondary {
-  border-color: var(--text-color);
-  background-color: transparent;
-  color: var(--text-color);
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-color);
+  border-color: var(--btn-secondary-border);
+  box-shadow:
+    var(--btn-depth) var(--btn-depth) 0 0 var(--btn-secondary-border),
+    0 0 24px var(--btn-secondary-glow);
 }
 
 a.button.secondary:hover,
 a.button.secondary:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--light-color);
-  color: var(--dark-color);
+  background: var(--btn-secondary-bg-hover);
+  transform: translate(var(--btn-depth), var(--btn-depth));
+  box-shadow:
+    0 0 0 0 var(--btn-secondary-border),
+    0 0 24px var(--btn-secondary-glow);
+  outline: none;
+}
+
+a.button.secondary:active,
+button.button.secondary:active {
+  background: var(--btn-secondary-bg-active);
+  transform: translate(var(--btn-depth), var(--btn-depth));
+  box-shadow:
+    0 0 0 0 var(--btn-secondary-border),
+    0 0 10px var(--btn-secondary-glow);
 }
 
 a.button.secondary[aria-disabled="true"],
-a.button.secondary[aria-disabled="true"]:hover,
-a.button.secondary[aria-disabled="true"]:focus-visible,
-button.button.secondary:disabled,
-button.button.secondary:disabled:hover,
-button.button.secondary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
+button.button.secondary:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background: var(--color-surface-2);
+  color: var(--color-on-surface-dim);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
-/* high-impact call-to-action */
+/* ── Accent — Gold text link ───────────────────── */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
-  color: var(--background-color);
+  background: transparent;
+  color: var(--color-tertiary);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  color: var(--color-tertiary-dim);
+  text-shadow: var(--shadow-glow-tertiary);
+  transform: none;
+  box-shadow: none;
+  outline: none;
 }
 
 a.button.accent[aria-disabled="true"],
-a.button.accent[aria-disabled="true"]:hover,
-a.button.accent[aria-disabled="true"]:focus-visible,
-button.button.accent:disabled,
-button.button.accent:disabled:hover,
-button.button.accent:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
+button.button.accent:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--color-on-surface-dim);
 }
 
+/* ========================================
+   IMAGES
+   ======================================== */
 main img {
   max-width: 100%;
   width: auto;
@@ -295,15 +350,18 @@ main img {
   width: 100%;
 }
 
-/* sections */
+/* ========================================
+   SECTIONS — Tonal Layering
+   No 1px borders. Background shifts only.
+   ======================================== */
 main > .section {
-  margin: 40px 0;
+  margin: var(--space-48) 0;
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: auto;
-  padding: 0 24px;
+  padding: 0 var(--space-24);
 }
 
 main > .section:first-of-type {
@@ -312,14 +370,85 @@ main > .section:first-of-type {
 
 @media (width >= 900px) {
   main > .section > div {
-    padding: 0 32px;
+    padding: 0 var(--space-32);
   }
 }
 
-/* section metadata */
+/* Section variants via section-metadata */
 main .section.light,
 main .section.highlight {
-  background-color: var(--light-color);
+  background-color: var(--color-surface-1);
   margin: 0;
-  padding: 40px 0;
+  padding: var(--space-80) 0;
+}
+
+main .section.dark {
+  background-color: var(--color-surface-0);
+  margin: 0;
+  padding: var(--space-80) 0;
+}
+
+main .section.elevated {
+  background-color: var(--color-surface-2);
+  margin: 0;
+  padding: var(--space-80) 0;
+}
+
+main .section.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  margin: 0;
+  padding: var(--space-80) 0;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Eyebrow / label text */
+.eyebrow {
+  font-family: var(--font-family-label);
+  font-size: var(--label-font-size-sm);
+  font-weight: 600;
+  letter-spacing: var(--label-letter-spacing);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+/* Glass panel */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  -webkit-border: var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: var(--radius-xl);
+}
+
+/* Chip / pill tag */
+.chip {
+  display: inline-block;
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  font-family: var(--font-family-label);
+  font-size: var(--label-font-size-sm);
+  font-weight: 600;
+}
+
+.default-content-wrapper h3 {
+    text-align: center;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    margin-top: 3rem;
+}
+
+#image {
+    visibility: hidden;
+    height: 0;
+    width: 0;
 }

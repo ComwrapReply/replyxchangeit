@@ -1,0 +1,209 @@
+/*
+ * Design System: Cinematic Neon Editorial — "The Electric Curator"
+ * All design tokens as CSS custom properties.
+ */
+
+:root {
+  /* ========================================
+     SURFACE HIERARCHY (Tonal Layering)
+     No borders — define space through tone.
+     ======================================== */
+  --color-surface-0: #050d22;
+  --color-surface-1: #09122a;
+  --color-surface-2: #0e1832;
+  --color-surface-3: #131e3b;
+  --color-surface-4: #1e2b4c;
+  --color-surface-variant: #192543;
+
+  /* ========================================
+     ACCENT COLORS — The Neon Spectrum
+     ======================================== */
+
+  /* Primary — Pink / Neon Pulse */
+  --color-primary: #ff89ab;
+  --color-primary-dim: #e30071;
+  --color-primary-container: #ff709e;
+  --color-on-primary: #4c0021;
+
+  /* Secondary — Cyan / Electric Accent */
+  --color-secondary: #00fbfb;
+  --color-secondary-dim: #00ecec;
+  --color-secondary-container: #006a6a;
+  --color-on-secondary-container: #d9fffe;
+
+  /* Tertiary — Gold / Editorial Highlight */
+  --color-tertiary: #ffe792;
+  --color-tertiary-dim: #efc900;
+  --color-tertiary-container: #ffd709;
+
+  /* Error */
+  --color-error: #ff6e84;
+  --color-error-dim: #d73357;
+  --color-error-container: #a70138;
+
+  /* ========================================
+     TEXT COLORS
+     Never use pure white (#fff) for body.
+     ======================================== */
+  --color-on-surface: #dee5ff;
+  --color-on-surface-variant: #a3aac6;
+  --color-on-surface-dim: #6d758f;
+  --color-outline: #6d758f;
+  --color-outline-variant: #3f475f;
+
+  /* ========================================
+     SEMANTIC / LINK COLORS
+     ======================================== */
+  --color-link: #ff89ab;
+  --color-link-hover: #e30071;
+
+  /* ========================================
+     BACKWARD-COMPAT ALIASES
+     Existing block CSS references these.
+     ======================================== */
+  --background-color: var(--color-surface-0);
+  --light-color: var(--color-surface-1);
+  --dark-color: var(--color-on-surface-dim);
+  --text-color: var(--color-on-surface);
+  --link-color: var(--color-link);
+  --link-hover-color: var(--color-link-hover);
+
+  /* ========================================
+     TYPOGRAPHY
+     Space Grotesk = headlines, labels
+     Manrope = body, titles
+     ======================================== */
+  --font-family-heading: 'Alaska-Bold', 'Alaska-Bold-fallback', sans-serif;
+  --font-family-body: 'Alaska-SemiBold', 'Alaska-SemiBold-fallback', sans-serif;
+  --font-family-body-regular: 'Alaska-Regular', 'Alaska-Regular-fallback', sans-serif;
+  --font-family-label: 'Alaska-Bold', 'Alaska-Bold-fallback', sans-serif;
+  --font-family-base: 'Alaska-Light', 'Alaska-Light-fallback', sans-serif;
+
+  /* Aliases */
+  --body-font-family: var(--font-family-body);
+  --heading-font-family: var(--font-family-heading);
+
+  /* Body sizes (mobile-first) */
+  --body-font-size-l: 22px;
+  --body-font-size-m: 20px;
+  --body-font-size-s: 18px;
+  --body-font-size-xs: 14px;
+  --body-font-size-xxs: 12px;
+
+  /* Heading sizes (mobile-first) */
+  --heading-font-size-xxl: 40px;
+  --heading-font-size-xl: 32px;
+  --heading-font-size-l: 26px;
+  --heading-font-size-m: 22px;
+  --heading-font-size-s: 18px;
+  --heading-font-size-xs: 16px;
+
+  /* Display (hero-scale) */
+  --display-font-size-lg: clamp(3rem, 6vw, 5rem);
+  --display-letter-spacing: -0.02em;
+  --display-line-height: 0.95;
+
+  /* Label (eyebrow text) */
+  --label-font-size-sm: 0.75rem;
+  --label-font-size-md: 0.875rem;
+  --label-letter-spacing: 0.1em;
+
+  /* ========================================
+     SPACING SCALE
+     ======================================== */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-80: 5rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ========================================
+     GLASSMORPHISM
+     Fill: surface-variant at 60% + blur
+     ======================================== */
+  --glass-bg: rgb(25 37 67 / 60%);
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgb(222 229 255 / 8%);
+
+  /* ========================================
+     ELEVATION — Glow Shadows
+     No black drop-shadows. Use colored glows.
+     ======================================== */
+  --shadow-sm: 0 2px 8px rgb(0 251 251 / 4%);
+  --shadow-md: 0 4px 16px rgb(0 251 251 / 6%);
+  --shadow-lg: 0 8px 32px rgb(0 0 0 / 40%);
+  --shadow-glow-primary: 0 0 30px rgb(255 137 171 / 15%);
+  --shadow-glow-secondary: 0 0 30px rgb(0 251 251 / 15%);
+  --shadow-glow-tertiary: 0 0 20px rgb(255 231 146 / 15%);
+
+  /* ========================================
+     BUTTONS — Hard-slab 3D system
+     Slab shadow = hard zero-blur offset block.
+     Press = translate face onto shadow → collapse.
+     ======================================== */
+  --btn-depth: 5px;
+  --btn-radius: 25px;
+  --btn-font-size: var(--body-font-size-xs);
+  --btn-padding: 1em 2.4em;
+  --btn-transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+
+  /* Primary slab colours */
+  --btn-primary-bg: #00fbfb;
+  --btn-primary-bg-hover: #006a6a;
+  --btn-primary-bg-active: #006a6a;
+  --btn-primary-color: #ffffff;
+  --btn-primary-border: #006a6a;
+  --btn-primary-glow: rgb(236 72 153 / 30%);
+  --btn-primary-gradient: linear-gradient(90deg, rgb(66 182 149) 0%, rgb(63 185 172) 50%, rgb(53 180 192) 100%);
+
+  /* Secondary slab colours */
+  --btn-secondary-bg: var(--color-secondary-container);
+  --btn-secondary-bg-hover: #004040;
+  --btn-secondary-bg-active: #002b2b;
+  --btn-secondary-color: var(--color-on-secondary-container);
+  --btn-secondary-border: #004040;
+  --btn-secondary-glow: rgb(0 106 106 / 40%);
+
+  /* ========================================
+     TRANSITIONS
+     ======================================== */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* ========================================
+     LAYOUT
+     ======================================== */
+  --nav-height: 64px;
+  --content-max-width: 1440px;
+  --section-padding: var(--space-80) 0;
+}
+
+/* Desktop overrides */
+@media (width >= 900px) {
+  :root {
+    --heading-font-size-xxl: 52px;
+    --heading-font-size-xl: 45px;
+    --heading-font-size-l: 38px;
+    --heading-font-size-m: 32px;
+    --heading-font-size-s: 26px;
+    --heading-font-size-xs: 22px;
+  }
+}

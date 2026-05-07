@@ -1,1 +1,57 @@
-/* add global styles that can be loaded post LCP here */
+/* Post-LCP global styles — loaded lazily */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus-visible — cyan ring (WCAG 2.2) */
+*:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom scrollbar — dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-4);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-on-surface-dim);
+}
+
+/* Scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-4) var(--color-surface-1);
+}
+
+/* High-contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --color-on-surface: #fff;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
