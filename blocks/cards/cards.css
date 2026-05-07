@@ -1,27 +1,259 @@
-.cards > ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
-}
+/* =====================================================
+   Cards — Bento layout (default)
+   Asymmetric collage grid: image fills tile, text
+   overlays at the bottom behind a gradient scrim.
 
-.cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
+   To opt-out add class "cards-grid" for a uniform grid.
+   ===================================================== */
 
-.cards .cards-card-body {
-  margin: 16px;
-}
-
-.cards .cards-card-image {
-  line-height: 0;
-}
-
-.cards > ul > li img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
+   main .section .cards-wrapper {
+    margin-top: var(--space-80, 80px);
+    margin-bottom: var(--space-20, 20px);
+    padding: 0 var(--space-24, 24px);
+    max-width: var(--content-max-width, 1200px);
+  }
+  
+  /* ── Grid container ─────────────────────────────── */
+  .cards > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-24, 24px);
+  }
+  
+  /* ── Tile base ──────────────────────────────────── */
+  .cards > ul > li {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-surface-1, #09122a);
+    border: 1px solid var(--color-outline-variant, #3f475f);
+    transition:
+      transform 250ms ease,
+      border-color 250ms ease,
+      box-shadow 250ms ease;
+  }
+  
+  .cards > ul > li:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-outline, #6d758f);
+    box-shadow: 0 8px 40px rgb(0 251 251 / 8%);
+  }
+  
+  /* ── Image container ────────────────────────────── */
+  .cards .cards-card-image {
+    position: relative;
+    line-height: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* ── Image ──────────────────────────────────────── */
+  .cards .cards-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms ease;
+    aspect-ratio: 4 / 3;
+  }
+  
+  /* Grid fallback resets img before bento hover is declared */
+  .cards.cards-grid .cards-card-image img {
+    height: auto;
+    transition: none;
+    transform: none;
+  }
+  
+  .cards:not(.cards-grid) > ul > li:hover .cards-card-image img {
+    transform: scale(1.05);
+  }
+  
+  /* ── Body — gradient overlay at bottom of tile ──── */
+  .cards .cards-card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    z-index: 1;
+    padding: var(--space-16, 16px);
+  
+    /*
+     * Two-stop scrim for WCAG AA contrast:
+     * - solid near-black at 0% (bottom) covers the heading
+     * - transitions to transparent at 100% (top)
+     * The solid band guarantees ≥ 4.5:1 for white text on any photo.
+     */
+    background:
+      linear-gradient(
+        to top,
+        rgb(5 13 34 / 96%) 0%,
+        rgb(5 13 34 / 85%) 45%,
+        rgb(5 13 34 / 40%) 85%,
+        transparent 100%
+      );
+  }
+  
+  /* ── Headings inside overlay ────────────────────── */
+  .cards .cards-card-body h3,
+  .cards .cards-card-body h4 {
+    font-family: var(--font-family-body, sans-serif);
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 var(--space-8, 8px);
+    font-size: var(--heading-font-size-s, 20px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  
+    /* Tight text-shadow reinforces legibility over any image area */
+    text-shadow:
+      0 1px 4px rgb(0 0 0 / 80%),
+      0 2px 12px rgb(0 0 0 / 60%);
+  }
+  
+  /* ── Body text ──────────────────────────────────── */
+  .cards .cards-card-body p {
+    /* Light slate — readable at ~5:1 against the scrim */
+    color: var(--color-on-surface, #dee5ff);
+    margin: 0;
+    font-size: var(--body-font-size-xs, 16px);
+    line-height: 1.4;
+    text-shadow: 0 1px 6px rgb(0 0 0 / 70%);
+  }
+  
+  /* ── Eyebrow / label ────────────────────────────── */
+  .cards .cards-card-body p em {
+    /* Gold tertiary — stands out as a category label */
+    color: var(--color-tertiary, #ffe792);
+    font-family: var(--font-family-label, sans-serif);
+    font-size: var(--label-font-size-sm, 0.75rem);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: var(--label-letter-spacing, 0.2em);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: var(--space-8, 8px);
+    text-shadow: 0 0 12px rgb(255 231 146 / 40%);
+  }
+  
+  /* ── Chips — teal pill badges ───────────────────── */
+  .cards .cards-card-body p strong {
+    display: inline-block;
+    padding: var(--space-4, 4px) var(--space-12, 12px);
+    border-radius: var(--radius-full, 9999px);
+    background-color: var(--color-secondary-container, #006a6a);
+    color: var(--color-on-secondary-container, #d9fffe);
+    font-size: var(--label-font-size-sm, 0.75rem);
+    font-family: var(--font-family-label, sans-serif);
+    font-weight: 700;
+    margin-right: var(--space-4, 4px);
+    letter-spacing: 0.05em;
+  }
+  
+  /* ── Desktop: 12-column bento grid ──────────────── */
+  @media (width >= 900px) {
+    .cards > ul {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  
+    /* Card 1 — wide landscape, spans 8 cols */
+    .cards > ul > li:nth-child(1) {
+      grid-column: span 8;
+    }
+  
+    .cards .cards-card-body {
+      padding: var(--space-24, 24px);
+    }
+  
+    .cards .cards-card-body p {
+      font-size: var(--body-font-size-s, 16px);
+    }
+  
+    .cards > ul > li:nth-child(1) .cards-card-image img {
+      aspect-ratio: 16 / 9;
+    }
+  
+    /* Card 2 — tall portrait, spans 4 cols */
+    .cards > ul > li:nth-child(2) {
+      grid-column: span 4;
+    }
+  
+    .cards > ul > li:nth-child(2) .cards-card-image img {
+      aspect-ratio: 3 / 4;
+    }
+  
+    /* Card 3 — tall portrait, spans 4 cols */
+    .cards > ul > li:nth-child(3) {
+      grid-column: span 4;
+    }
+  
+    .cards > ul > li:nth-child(3) .cards-card-image img {
+      aspect-ratio: 3 / 5;
+    }
+  
+    /* Card 4 — text left / image right, spans 8 cols */
+    .cards > ul > li:nth-child(4) {
+      grid-column: span 8;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .cards > ul > li:nth-child(4) .cards-card-image {
+      order: 2;
+    }
+  
+    .cards > ul > li:nth-child(4) .cards-card-image img {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+  
+    .cards > ul > li:nth-child(4) .cards-card-body {
+      order: 1;
+      position: static;
+      background: none;
+      padding: var(--space-40, 40px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+  
+  /* =====================================================
+     Uniform-grid fallback — opt-in with "cards-grid"
+     All base selectors above must appear first so these
+     more-specific overrides satisfy no-descending-specificity.
+     ===================================================== */
+  .cards.cards-grid > ul {
+    grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+  }
+  
+  .cards.cards-grid > ul > li {
+    border-radius: 0;
+  }
+  
+  .cards.cards-grid > ul > li:hover .cards-card-image img {
+    transform: none;
+  }
+  
+  .cards.cards-grid .cards-card-body {
+    position: static;
+    background: none;
+    padding: var(--space-16, 16px);
+    margin: 0;
+  }
+  
+  .cards.cards-grid .cards-card-body p {
+    font-size: var(--body-font-size-s, 16px);
+  }
+  
+  .cards.cards-grid .cards-card-body p strong {
+    display: inline;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--color-on-surface, #dee5ff);
+    font-size: inherit;
+  }
+  

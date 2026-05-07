@@ -1,0 +1,228 @@
+/* Hero-video – full-bleed autoplaying video with bottom-anchored text overlay.
+   Design matches hero block; only the background layer changes (video vs image). */
+
+/* ── Strip section / wrapper chrome ───────────────────────── */
+main > .section.hero-video-container {
+  padding: 0;
+  position: relative;
+}
+
+.hero-video-container .hero-video-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* ── Block root ──────────────────────────────────────────────
+   Fills the full viewport; stacking context for video + overlay. */
+.hero-video {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 480px;
+  overflow: hidden;
+}
+
+/* ── Full-bleed video layer ────────────────────────────────── */
+.hero-video .hero-video-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-video .hero-video-image .hero-video-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── Content overlay ─────────────────────────────────────────
+   Identical gradient and layout to the hero block. */
+.hero-video .hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  /* Gradient: solid dark at bottom → transparent at 55% height */
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 88%) 0%,
+    rgb(0 0 0 / 60%) 30%,
+    rgb(0 0 0 / 0%) 55%
+  );
+}
+
+/* ── Text column ───────────────────────────────────────────── */
+.hero-video .hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-8, 8px);
+  width: 100%;
+  max-width: 900px;
+  padding: var(--space-32, 32px) var(--space-24, 24px) var(--space-40, 40px);
+}
+
+/* ── Badge / eyebrow ───────────────────────────────────────── */
+.hero-video .hero-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 18px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-8, 8px);
+}
+
+/* ── Wave zoom animation ───────────────────────────────────── */
+@keyframes hero-video-char-wave {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    filter: brightness(1) drop-shadow(0 0 0 rgb(255 45 120 / 0%));
+  }
+
+  50% {
+    transform: scale(1.32) translateY(-10px);
+    filter: brightness(1.5) drop-shadow(0 0 14px rgb(255 45 120 / 80%));
+  }
+}
+
+/* ── Headings ──────────────────────────────────────────────── */
+.hero-video h1 {
+  color: transparent;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-16, 16px);
+  text-transform: uppercase;
+}
+
+/* Individual character spans created by JS */
+.hero-video h1 .hero-char {
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #ff2d78 0%,
+    #e040fb 16%,
+    #7c3aed 32%,
+    #2563eb 46%,
+    #06b6d4 58%,
+    #10b981 72%,
+    #fbbf24 86%,
+    #ff2d78 100%
+  );
+  background-size: 100vw auto;
+  background-attachment: fixed;
+  background-clip: text;
+  animation: hero-video-char-wave 1.8s ease-in-out infinite both;
+  transform-origin: center bottom;
+  will-change: transform, filter;
+}
+
+.hero-video h1 .hero-char-space {
+  animation: none;
+}
+
+.hero-video h2 {
+  font-family: var(--heading-font-family);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: var(--label-letter-spacing, 0.2em);
+  text-transform: uppercase;
+  color: var(--color-secondary, #00fbfb);
+  margin: 0 0 var(--space-16, 1rem);
+  text-shadow:
+    0 0 18px rgb(0 251 251 / 50%),
+    0 2px 8px rgb(0 0 0 / 60%);
+}
+
+/* ── Description ───────────────────────────────────────────── */
+.hero-video p:not(.hero-badge, :has(a), :has(picture)) {
+  color: #e2e8f0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  border-left: 3px solid #06b6d4;
+  padding-left: var(--space-16, 16px);
+  margin: var(--space-8, 8px) 0 var(--space-24, 24px);
+  max-width: 560px;
+  text-align: left;
+}
+
+/* ── Buttons — layout only (styles from global styles.css) ──── */
+.hero-video .hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-16, 16px);
+  margin-top: var(--space-16, 16px);
+}
+
+.hero-video .hero-buttons p {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.hero-video .hero-buttons a.button {
+  font-size: 1.5rem;
+  padding: 14px 32px;
+}
+
+/* ── Tablet (600px+) ───────────────────────────────────────── */
+@media (width >= 600px) {
+  .hero-video .hero-text {
+    padding-bottom: var(--space-48, 48px);
+  }
+}
+
+/* ── Desktop (900px+) ──────────────────────────────────────── */
+@media (width >= 900px) {
+  .hero-video .hero-text {
+    padding: var(--space-40, 40px) var(--space-48, 48px) var(--space-64, 64px);
+    max-width: 1440px;
+  }
+
+  .hero-video h1 {
+    font-size: clamp(3rem, 10vw, 10rem);
+  }
+}
+
+/* ── Wide (1200px+) ────────────────────────────────────────── */
+@media (width >= 1200px) {
+  .hero-video .hero-text {
+    padding-bottom: var(--space-80, 80px);
+  }
+}
+
+/* ── Accessibility ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video .hero-video-media {
+    /* Pause animation but keep video visible as a static poster */
+    animation-play-state: paused;
+  }
+
+  .hero-video .hero-buttons a.button {
+    transition: none;
+  }
+
+  .hero-video h1 .hero-char {
+    animation: none;
+  }
+}
+
+.hero-video .hero-buttons a.button:focus-visible {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
