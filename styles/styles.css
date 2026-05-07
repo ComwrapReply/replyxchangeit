@@ -418,7 +418,6 @@ main .section.glass {
 /* Glass panel */
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
   -webkit-border: var(--glass-border);
   backdrop-filter: var(--glass-blur);
   border: var(--glass-border);

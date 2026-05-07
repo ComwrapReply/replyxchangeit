@@ -5,12 +5,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Focus-visible — cyan ring (WCAG 2.2) */
-*:focus-visible {
-  outline: 2px solid var(--color-secondary);
-  outline-offset: 2px;
-}
-
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -48,10 +42,16 @@ html {
   scrollbar-color: var(--color-surface-4) var(--color-surface-1);
 }
 
+/* Focus-visible — cyan ring (WCAG 2.2) */
+*:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
 /* High-contrast mode support */
 @media (prefers-contrast: more) {
   :root {
     --color-on-surface: #fff;
-    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+    --glass-border: 1px solid rgb(255 255 255 / 30%);
   }
 }
