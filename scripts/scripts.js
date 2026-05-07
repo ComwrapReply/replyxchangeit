@@ -114,6 +114,86 @@ function decorateButtons(main) {
 }
 
 /**
+ * Validates whether a link should trigger native share UI.
+ * @param {HTMLAnchorElement} anchor A candidate anchor element
+ * @returns {string|null} Normalized URL for sharing, otherwise null
+ */
+function getShareUrl(anchor) {
+  const shareLinkConfig = {
+    allowedProtocols: new Set(['http:', 'https:']),
+    labelPattern: /^share$/i,
+  };
+
+  if (!anchor) return null;
+  const rawHref = anchor.getAttribute('href');
+  if (!rawHref) return null;
+
+  const trimmedHref = rawHref.trim();
+  const linkLabel = anchor.textContent?.trim() || '';
+  const isShareLink = shareLinkConfig.labelPattern.test(linkLabel) || anchor.dataset.share === 'true';
+
+  if (!isShareLink || !trimmedHref) return null;
+
+  try {
+    const parsedUrl = new URL(trimmedHref, window.location.href);
+    if (!shareLinkConfig.allowedProtocols.has(parsedUrl.protocol)) return null;
+    return parsedUrl.href;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * Decorates "Share" links so mobile devices can use the native share sheet.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateShareLinks(main) {
+  const shareLinks = [...main.querySelectorAll('a[href]')];
+
+  shareLinks.forEach((anchor) => {
+    const shareUrl = getShareUrl(anchor);
+    if (!shareUrl) return;
+
+    anchor.addEventListener('click', async (event) => {
+      // Preserve browser defaults for modified/multi-button clicks.
+      if (
+        event.defaultPrevented
+        || event.button !== 0
+        || event.metaKey
+        || event.ctrlKey
+        || event.shiftKey
+        || event.altKey
+      ) {
+        return;
+      }
+
+      if (!window.isSecureContext || !navigator.share) return;
+
+      event.preventDefault();
+
+      try {
+        const shareData = {
+          title: document.title,
+          text: document.title,
+          url: shareUrl,
+        };
+
+        if (navigator.canShare && !navigator.canShare(shareData)) {
+          window.location.href = shareUrl;
+          return;
+        }
+
+        await navigator.share(shareData);
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          window.location.href = shareUrl;
+        }
+      }
+    });
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -124,6 +204,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  decorateShareLinks(main);
 }
 
 /**
