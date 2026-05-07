@@ -1,9 +1,10 @@
 /* header and nav layout */
-header .nav-wrapper {
-  background-color: var(--background-color);
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 2;
-  position: fixed;
 }
 
 header nav {
@@ -15,9 +16,7 @@ header nav {
   align-items: center;
   gap: 0 24px;
   margin: auto;
-  max-width: 1248px;
   height: var(--nav-height);
-  padding: 0 24px;
   font-family: var(--body-font-family);
 }
 
@@ -30,17 +29,19 @@ header nav[aria-expanded='true'] {
   min-height: 100dvh;
 }
 
+/* Dark gradient scrim behind the nav — fades from solid at the top to
+   transparent at 50%, matching the bottom overlay style on .hero-text */
+header .nav-wrapper {
+  position: relative;
+}
+
 @media (width >= 900px) {
   header .nav-wrapper {
     position: relative;
   }
 
   header nav {
-    display: flex;
-    justify-content: space-between;
     gap: 0 32px;
-    max-width: 1264px;
-    padding: 0 32px;
   }
 
   header nav[aria-expanded='true'] {
@@ -49,7 +50,7 @@ header nav[aria-expanded='true'] {
   }
 }
 
-header nav p {
+header nav h2 {
   margin: 0;
   line-height: 1;
 }
@@ -60,9 +61,10 @@ header nav a:any-link {
 
 /* hamburger */
 header nav .nav-hamburger {
-  grid-area: hamburger;
-  height: 22px;
-  display: flex;
+    grid-area: hamburger;
+    height: 22px;
+    display: flex;
+    display: none;
   align-items: center;
 }
 
@@ -141,15 +143,13 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
 
 /* brand */
 header .nav-brand {
-  grid-area: brand;
-  flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
-  font-weight: 700;
-  line-height: 1;
+  margin-top:4rem;
+  grid-area: brand; 
+  text-align: center;
 }
 
 header nav .nav-brand img {
-  width: 128px;
+  width: 176px;
   height: auto;
 }
 
@@ -186,6 +186,14 @@ header nav .nav-sections ul > li > ul > li {
 }
 
 @media (width >= 900px) {
+    header .nav-brand {
+        text-align: left;
+    }
+
+  header nav .nav-brand img {
+      width: 256px;
+  }  
+
   header nav .nav-sections {
     display: block;
     visibility: visible;
