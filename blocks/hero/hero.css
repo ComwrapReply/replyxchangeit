@@ -1,37 +1,356 @@
+/* Hero – full-bleed image with bottom-anchored text overlay */
+
+/* ── Strip section / wrapper chrome ───────────────────────── */
+main > .section.hero-container {
+  padding: 0;
+  position: relative;
+}
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
 }
 
+/* ── Block root ──────────────────────────────────────────────
+   Fills the full viewport width & height, acts as stacking
+   context for the image layer and the content overlay.        */
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 480px;
+  overflow: hidden;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero picture {
+/* ── Full-bleed image layer ────────────────────────────────── */
+.hero .hero-image {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
-}
-
-.hero img {
-  object-fit: cover;
   width: 100%;
   height: 100%;
 }
 
-@media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
+.hero .hero-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero .hero-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── Content overlay ─────────────────────────────────────────
+   Sits above the image, anchored to the bottom.
+   A gradient provides dark-to-transparent contrast backdrop
+   from the bottom up to 35% of the hero height.               */
+.hero .hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  /* Gradient: solid dark at bottom → transparent at 35% height */
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 88%) 0%,
+    rgb(0 0 0 / 60%) 30%,
+    rgb(5 13 34 / 0%) 55%
+  );
+}
+
+/* ── Text column ───────────────────────────────────────────── */
+.hero .hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  padding: var(--space-32, 32px) var(--space-24, 24px) var(--space-40, 40px);
+  padding-bottom: calc(var(--space-40, 40px) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── Badge / eyebrow ───────────────────────────────────────── */
+.hero .hero-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  color: var(--color-tertiary-dim, #ffe792);
+  font-family: var(--font-family-label, var(--heading-font-family));
+  font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--label-letter-spacing, 0.2em);
+  text-transform: uppercase;
+  margin-bottom: var(--space-12, 12px);
+}
+
+/* ── Wave zoom animation — DISABLED ────────────────────────── */
+@keyframes hero-char-wave {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    filter: brightness(1) drop-shadow(0 0 0 rgb(255 45 120 / 0%));
   }
+
+  50% {
+    transform: scale(1.32) translateY(-10px);
+    filter: brightness(1.5) drop-shadow(0 0 14px rgb(255 45 120 / 80%));
+  }
+}
+
+/* ── Headings ──────────────────────────────────────────────── */
+.hero h1 {
+  /*
+   * color / background are intentionally unset here — the rainbow
+   * gradient is applied per .hero-char span so transforms don't
+   * clip the gradient (inline-block breaks background-clip: text
+   * when set on the parent).
+   */
+  color: rgb(255 45 120);
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: var(--label-letter-spacing, 0.1em);
+  margin: 0 0 var(--space-16, 16px);
+  text-transform: uppercase;
+}
+
+/* Individual character spans created by JS — animation disabled */
+.hero h1 .hero-char {
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #ff2d78 0%,
+    #e040fb 16%,
+    #7c3aed 32%,
+    #2563eb 46%,
+    #06b6d4 58%,
+    #10b981 72%,
+    #fbbf24 86%,
+    #ff2d78 100%
+  );
+  background-size: 100vw auto;
+  background-attachment: fixed;
+  background-clip: text;
+  animation: none;
+}
+
+.hero h1 .hero-char-space {
+  animation: none;
+}
+
+/* ── h2 sparkle wrapper ─────────────────────────────────────── */
+.hero .hero-h2-wrapper {
+  display: block;
+  position: relative;
+  width: fit-content;
+  margin: 0 auto var(--space-16, 1rem);
+}
+
+.hero h2 {
+  font-family: var(--heading-font-family);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: var(--label-letter-spacing, 0.2em);
+  text-transform: uppercase;
+  color: var(--color-secondary, #00fbfb);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Decorative down arrow below h2 ─────────────────────────── */
+.hero .hero-down-arrow {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  padding: var(--space-8, 8px) 0 var(--space-16, 16px);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  animation: hero-down-arrow-bounce 1.5s ease-in-out infinite;
+}
+
+.hero .hero-down-arrow::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 3px solid rgb(255 45 120);
+  border-bottom: 3px solid rgb(255 45 120);
+  transform: rotate(45deg);
+}
+
+@keyframes hero-down-arrow-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(8px);
+    opacity: 0.85;
+  }
+}
+
+/* ── Sparkle container — fills the h2 wrapper ──────────────── */
+.hero .hero-sparkles {
+  position: absolute;
+  inset: -40% -20%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+/* ── Individual sparkle — animation disabled ────────────────── */
+.hero .hero-sparkle {
+  display: none;
+}
+
+/* Four-pointed star shape via clip-path */
+.hero .hero-sparkle::before,
+.hero .hero-sparkle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--sparkle-color, #00fbfb);
+  box-shadow: 0 0 6px 2px var(--sparkle-color, #00fbfb);
+}
+
+/* Vertical arm of the star */
+.hero .hero-sparkle::before {
+  width: 30%;
+  left: 35%;
+}
+
+/* Horizontal arm of the star */
+.hero .hero-sparkle::after {
+  height: 30%;
+  top: 35%;
+}
+
+@keyframes hero-sparkle-twinkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+
+  80% {
+    opacity: 0.8;
+    transform: scale(0.8) rotate(135deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+  }
+}
+
+/* ── Disable sparkles for users who prefer reduced motion ────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-sparkle {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ── Description ───────────────────────────────────────────── */
+.hero p:not(.hero-badge, :has(a), :has(picture)) {
+  color: #e2e8f0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  border-left: 3px solid #06b6d4;
+  padding-left: var(--space-16, 16px);
+  margin: var(--space-8, 8px) 0 var(--space-24, 24px);
+  max-width: 560px;
+  text-align: left;
+}
+
+/* ── Buttons — layout only (styles from global styles.css) ──── */
+.hero .hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-16, 16px);
+  margin-top: var(--space-16, 16px);
+}
+
+.hero .hero-buttons p {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+/* Hero buttons are larger than the global default */
+.hero .hero-buttons a.button {
+  font-size: 1.5rem;
+  padding: 14px 32px;
+}
+
+/* ── Tablet (600px+) ───────────────────────────────────────── */
+@media (width >= 600px) {
+  .hero .hero-text {
+    padding-bottom: calc(var(--space-48, 48px) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ── Desktop (900px+) ──────────────────────────────────────── */
+@media (width >= 900px) {
+  .hero .hero-text {
+    padding: var(--space-40, 40px) var(--space-48, 48px) var(--space-64, 64px);
+    max-width: 1440px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+}
+
+/* ── Wide (1200px+) ────────────────────────────────────────── */
+@media (width >= 1200px) {
+  .hero .hero-text {
+    padding-bottom: var(--space-32, 32px);
+  }
+}
+
+/* ── Accessibility ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-buttons a.button {
+    transition: none;
+  }
+
+  .hero h1 .hero-char {
+    animation: none;
+  }
+
+  .hero .hero-down-arrow {
+    animation: none;
+  }
+}
+
+.hero .hero-buttons a.button:focus-visible {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
 }
